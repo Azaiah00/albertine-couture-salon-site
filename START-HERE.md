@@ -32,7 +32,7 @@ git push -u origin main
 
 Netlify → **Add new site → Import an existing project** → GitHub → pick the repo → Deploy. `netlify.toml` already pins Node 20 and lets `@netlify/plugin-nextjs` handle output — **do not set a publish directory**.
 
-Then in Netlify → **Site configuration → Change site name** → `albertine-couture-demo`, so the address is **https://albertine-couture-demo.netlify.app** — the same address pinned in `netlify.toml` (`NEXT_PUBLIC_SITE_URL`) that every share preview, canonical tag and the sitemap use. If that name is taken, pick another and change that one line in `netlify.toml` to match, then push again.
+The live demo is **https://albertine-couture-salon-site.netlify.app** — the one address pinned in `netlify.toml` (`NEXT_PUBLIC_SITE_URL`). Every share preview, canonical tag, `og:url` and the sitemap point there, and any other Netlify address for the site (deploy previews, `<id>--albertine-couture-salon-site.netlify.app` deploy links) redirects to it. If you ever rename the site in Netlify, change that one line to match and push again.
 
 After the first deploy: Netlify → **Forms** → turn on email notifications (contact, careers, spin-to-win).
 
@@ -40,14 +40,14 @@ After the first deploy: Netlify → **Forms** → turn on email notifications (c
 Every page has its own 1200×630 card, so a texted or DM'd link shows a branded image:
 | Link | Card |
 |---|---|
-| `/` and most pages | `public/og.jpg` — Your dream hair awaits — any hour. |
+| `/` and most pages | `public/og.jpg` — Your dream hair awaits — any hour. (three arched real photos, 24/7 gold seal) |
 | `/book` | `public/og/book.jpg` |
 | `/portal` and portal pages | `public/og/portal.jpg` — One portal. Three views. |
 | `/services` | `public/og/menu.jpg` — Every style, priced. |
 | `/style-finder` | `public/og/finder.jpg` — Your exact price in three taps. |
 | `/services/<slug>` (9 pages) | `public/og/<slug>.jpg` |
 
-To change a card: edit `scripts/make-share-cards.py`, run `python scripts/make-share-cards.py`. iMessage caches a preview the first time a link is sent — text it to yourself once after each deploy.
+To change a card: edit `scripts/make-share-cards.py`, run `python scripts/make-share-cards.py`, then bump `OG_VERSION` in `src/lib/og.ts` so Facebook, WhatsApp and LinkedIn fetch the new image. iMessage caches a preview the first time a link is sent — text it to yourself once after each deploy.
 
 The demo stays out of Google (noindex) until it's on their real domain.
 

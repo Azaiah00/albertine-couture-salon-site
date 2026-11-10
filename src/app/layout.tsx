@@ -1,3 +1,4 @@
+import { ogImg } from "@/lib/og";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -48,13 +49,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: "Albertine Couture Hair Salon — Your dream hair awaits, any hour",
     description: "Braids, twists, locs, sew-ins & K-tip. Open 24/7 in Gaithersburg, MD & Dumfries, VA. Walk-ins from 5 AM.",
-    images: [{ url: "/og.jpg", width: 1200, height: 630, type: "image/jpeg", alt: "Albertine Couture Hair Salon — open 24/7 in Gaithersburg, MD and Dumfries, VA" }],
+    images: [{ url: ogImg("/og.jpg"), width: 1200, height: 630, type: "image/jpeg", alt: "Albertine Couture Hair Salon — open 24/7 in Gaithersburg, MD and Dumfries, VA" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Albertine Couture Hair Salon — Your dream hair awaits, any hour",
     description: "Braids, twists, locs, sew-ins & K-tip · open 24/7 · Gaithersburg, MD & Dumfries, VA.",
-    images: ["/og.jpg"],
+    images: [ogImg("/og.jpg")],
   },
   ...(IS_DEMO_HOST ? { robots: { index: false, follow: false } } : {}),
   alternates: { canonical: "/" },

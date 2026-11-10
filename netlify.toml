@@ -5,8 +5,10 @@
   NODE_VERSION = "20"
   NEXT_TELEMETRY_DISABLED = "1"
   # The one address every share preview, canonical tag and sitemap points to.
-  # Texted links always resolve to this site. At launch change it to the salon's real domain
-  NEXT_PUBLIC_SITE_URL = "https://albertine-couture-demo.netlify.app"
+  # Texted links always resolve to this site, and any other Netlify address for this site
+  # (deploy previews, unique deploy URLs) redirects here (next.config.ts).
+  # At launch change it to the salon's real domain.
+  NEXT_PUBLIC_SITE_URL = "https://albertine-couture-salon-site.netlify.app"
 
 # @netlify/plugin-nextjs (Netlify's Next.js runtime) is detected automatically.
 # Do not set a publish directory; the runtime handles the output.

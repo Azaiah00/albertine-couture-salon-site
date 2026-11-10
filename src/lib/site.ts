@@ -94,7 +94,7 @@ export const SITE = {
    * Address used by share previews, canonical tags and the sitemap. On Netlify this is
    * picked up from NEXT_PUBLIC_SITE_URL (netlify.toml). At launch set it to the real domain.
    */
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://albertine-couture-demo.netlify.app").replace(/\/$/, ""),
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://albertine-couture-salon-site.netlify.app").replace(/\/$/, ""),
   /** Flagship (Gaithersburg) — used where one number/address is needed. */
   phone: MD.phone,
   phoneHref: MD.phoneHref,
