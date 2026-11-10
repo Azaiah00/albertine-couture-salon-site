@@ -13,8 +13,8 @@ import { InstagramIcon, TikTokIcon } from "@/components/site/BrandIcons";
  * SIGNATURE HERO — "Your dream hair awaits — any hour."
  * Reuses Couture House's line-art woman (public/media/hero/lines.json), now drawn in
  * Albertine gold. Her hair redraws through four styles the salon is known for, while a
- * 24-hour gold clock ring behind her (the salon never closes) marks the walk-in window
- * (5 AM–7:30 PM, solid gold) and after-hours (dotted), with a hand at the live Eastern time.
+ * 24-hour gold clock ring behind her shows the salon never closes: the whole dial is lit,
+ * a gold light orbits it nonstop, and a hand marks the live Eastern time.
  * Visitors can tap a style to change it.
  * Honors prefers-reduced-motion (static, no autoplay) and pauses off-screen.
  */
@@ -323,16 +323,33 @@ function ClockRing({ cx, cy, r }: { cx: number; cy: number; r: number }) {
   const now = useEasternClock();
   const mins = now ? now.getHours() * 60 + now.getMinutes() : 10 * 60;
   const [hx, hy] = at(cx, cy, r - 26, mins);
-  const walk = arc(cx, cy, r, 5 * 60, 19 * 60 + 30);
-  const after = arc(cx, cy, r, 19 * 60 + 30, 24 * 60 + 5 * 60);
   const circ = 2 * Math.PI * r;
+  // Full circle = open all 24 hours (two half arcs so it can draw on).
+  const full = `${arc(cx, cy, r, 0, 720)} ${arc(cx, cy, r, 720, 1440).replace("M", "L")}`;
   const st = now ? salonState(now) : null;
+  const origin = { transformBox: "view-box", transformOrigin: `${cx}px ${cy}px` } as const;
+  // Comet tail: short arcs behind the head, fading out (minutes before 12 o'clock).
+  const TAIL = 16;
   return (
     <g className="hero-ring" aria-hidden>
+      <defs>
+        <filter id="ring-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" />
+        </filter>
+      </defs>
       <circle cx={cx} cy={cy} r={r + 16} fill="none" stroke="#c9a24d" strokeOpacity={0.18} strokeWidth={1} className="draw" strokeDasharray={2 * Math.PI * (r + 16)} strokeDashoffset={2 * Math.PI * (r + 16)} />
-      {/* walk-in window: solid gold · after-hours: dotted */}
-      <path d={walk} fill="none" stroke="#c9a24d" strokeWidth={4} strokeLinecap="round" className="draw" strokeDasharray={circ} strokeDashoffset={circ} />
-      <path d={after} fill="none" stroke="#c9a24d" strokeOpacity={0.55} strokeWidth={4} strokeLinecap="round" strokeDasharray="0.1 14" />
+      {/* the whole dial is lit: open 24 hours, 7 days */}
+      <path d={full} fill="none" stroke="#c9a24d" strokeOpacity={0.55} strokeWidth={3} strokeLinecap="round" className="draw" strokeDasharray={circ} strokeDashoffset={circ} />
+      {/* slow counter-turning inner track — the clock never stops */}
+      <circle cx={cx} cy={cy} r={r - 34} fill="none" stroke="#e3c77d" strokeOpacity={0.22} strokeWidth={1} strokeDasharray="1 9" strokeLinecap="round" className="ring-spin-rev" style={origin} />
+      {/* gold light that orbits the full dial, around the clock */}
+      <g className="ring-orbit" style={origin}>
+        {Array.from({ length: TAIL }).map((_, i) => (
+          <path key={i} d={arc(cx, cy, r, 1440 - (i + 1) * 14, 1440 - i * 14 + 0.5)} fill="none" stroke="#f3dc9a" strokeOpacity={(1 - i / TAIL) * 0.9} strokeWidth={4.5 - (i / TAIL) * 2.5} strokeLinecap="round" />
+        ))}
+        <circle cx={cx} cy={cy - r} r={10} fill="#f3dc9a" opacity={0.55} filter="url(#ring-glow)" />
+        <circle cx={cx} cy={cy - r} r={4.5} fill="#fff6dc" />
+      </g>
       {Array.from({ length: 24 }).map((_, h) => {
         const [x0, y0] = at(cx, cy, r - 10, h * 60);
         const [x1, y1] = at(cx, cy, r - (h % 6 === 0 ? 26 : 16), h * 60);
@@ -340,9 +357,9 @@ function ClockRing({ cx, cy, r }: { cx: number; cy: number; r: number }) {
       })}
       {[
         [0, "12 AM"],
-        [5 * 60, "5 AM"],
+        [6 * 60, "6 AM"],
         [12 * 60, "NOON"],
-        [19 * 60 + 30, "7:30 PM"],
+        [18 * 60, "6 PM"],
       ].map(([m, l]) => {
         const [x, y] = at(cx, cy, r + 42, m as number);
         return (

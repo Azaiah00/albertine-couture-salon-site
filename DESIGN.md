@@ -36,7 +36,7 @@ Every pair is measured by `npm run audit:contrast` (all pass WCAG AA).
 `.wrap` max 1240px, 20px gutter (32px ≥768). Sections 96–144px vertical. Cards radius 20px; buttons pill. Tap targets ≥44px. Mobile first; a thumb-zone Book bar appears on phones after the hero.
 
 ## Signature motion (all honor `prefers-reduced-motion`)
-1. **Hero — "Your dream hair awaits — any hour."** A gold line-art woman whose hair redraws through locs → knotless → silk press → pixie & color, inside a **24-hour gold clock ring**: the walk-in window (5 AM–7:30 PM) is a solid arc, after-hours is dotted, and a hand points at the live Eastern time. Visitors can tap a style chip. Autoplay pauses off-screen.
+1. **Hero — "Your dream hair awaits — any hour."** A gold line-art woman whose hair redraws through locs → knotless → silk press → pixie & color, inside a **24-hour gold clock ring**: the whole dial is lit (open 24 hours), a gold light with a fading tail orbits it nonstop every 14 s, a dotted inner track turns slowly the other way, and a hand points at the live Eastern time (green dot during walk-in hours). Visitors can tap a style chip. Autoplay pauses off-screen.
 2. **Gold Thread** — a three-strand braid draws itself down the "never closes" timeline as you scroll (GSAP ScrollTrigger scrub).
 3. **Gold foil** — the Price Finder price and the final "Albertine Couture" script shimmer with a slow animated gold gradient.
 4. **Duotone photos** — real client photos sit in a warm gold duotone and bloom to full color on hover, so mismatched phone photos read as one set.

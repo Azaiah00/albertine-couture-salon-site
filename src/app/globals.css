@@ -397,6 +397,19 @@
   }
 }
 
+/* Hero clock ring — a light orbits the 24-hour dial, nonstop */
+.ring-orbit {
+  animation: ring-turn 14s linear infinite;
+}
+.ring-spin-rev {
+  animation: ring-turn 90s linear infinite reverse;
+}
+@keyframes ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
