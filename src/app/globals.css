@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+/* Metric-matched fallbacks for Jost (next/font already adds an Arial-based one for
+   Windows/macOS/iOS). These cover Android (Roboto) and Linux (DejaVu Sans) so the
+   swap to Jost never re-wraps headings. Values measured from the font files. */
+@font-face {
+  font-family: "Jost Fallback Roboto";
+  src: local("Roboto"), local("Roboto-Regular");
+  size-adjust: 96.66%;
+  ascent-override: 110.69%;
+  descent-override: 38.79%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Jost Fallback DejaVu";
+  src: local("DejaVu Sans"), local("DejaVuSans");
+  size-adjust: 84.66%;
+  ascent-override: 126.39%;
+  descent-override: 44.3%;
+  line-gap-override: 0%;
+}
+
+
+/* ==========================================================================
+   Albertine Couture Hair Salon — design tokens (see DESIGN.md).
+   Palette sampled from the salon's own gold badge logo: deep gold frame
+   #C28A24, champagne highlights #E8CD79, crimson script #C3121E, ivory
+   ribbon #F6F0D3 — set on the black of their salon and social graphics.
+   Never use a color, font or radius outside these tokens.
+   ========================================================================== */
+@theme {
+  /* Night surfaces (warm black) */
+  --color-ink: #0b0a08;
+  --color-onyx: #14110d;
+  --color-graphite: #1d1913;
+  --color-smoke: #2c261c;
+
+  /* Gold (logo frame) */
+  --color-gold: #c9a24d; /* decoration, line art, large display only */
+  --color-champagne: #e3c77d; /* gold TEXT on dark (11:1 on ink) */
+  --color-bronze: #8a6420; /* gold text on light (4.9:1 on ivory) */
+
+  /* Crimson (logo script) */
+  --color-crimson: #b5121b; /* primary button fill — white text 6.6:1 */
+  --color-ember: #cc1a22; /* button hover */
+  --color-rouge: #a50f18; /* crimson TEXT on light (7.3:1 on bone) */
+
+  /* Ivory + light surfaces */
+  --color-silver: #b5ab97; /* muted text on dark */
+  --color-mist: #e8e1d2; /* body text on dark */
+  --color-bone: #f6f0de; /* headings on dark, light sections (logo ivory) */
+  --color-paper: #fffdf8;
+  --color-char: #1b1712; /* text on light */
+  --color-stone: #5f584c; /* muted text on light */
+
+  /* Status (portal) */
+  --color-ok: #3fae7a;
+  --color-warn: #e8a33c;
+
+  --font-sans: var(--font-jost), "Jost Fallback Roboto", "Jost Fallback DejaVu", "Futura", system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  --font-script: var(--font-pinyon), "Pinyon Script", cursive;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+    background: var(--color-ink);
+    color-scheme: dark;
+  }
+  body {
+    background: var(--color-ink);
+    color: var(--color-mist);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-crimson);
+    color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-champagne);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  img,
+  svg,
+  video {
+    max-width: 100%;
+  }
+  button {
+    cursor: pointer;
+  }
+
+  /* Custom scrollbar — gold-leaf thumb on an ink track (never default grey) */
+  html {
+    scrollbar-color: var(--color-gold) var(--color-onyx);
+    scrollbar-width: thin;
+  }
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-onyx);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-champagne), var(--color-gold) 45%, var(--color-bronze));
+    border-radius: 999px;
+    border: 2px solid var(--color-onyx);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--color-paper), var(--color-champagne));
+  }
+  .light-scroll {
+    scrollbar-color: var(--color-bronze) var(--color-bone);
+  }
+  .light-scroll::-webkit-scrollbar-track {
+    background: var(--color-bone);
+  }
+  .light-scroll::-webkit-scrollbar-thumb {
+    border-color: var(--color-bone);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .wrap {
+      padding-inline: 2rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  /* Display type — Cormorant serif, echoes the couture badge */
+  /* Couture serif display — editorial, like a fashion house masthead */
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+  }
+  .script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 0.8;
+    /* Fixed box so the script font swapping in never changes the line height (no CLS). */
+    display: inline-block;
+    height: 0.72em;
+    overflow: visible;
+    vertical-align: bottom;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+    font-size: 0.98rem;
+    letter-spacing: 0.04em;
+    transition:
+      transform 0.35s var(--ease-lux),
+      box-shadow 0.35s var(--ease-lux),
+      background-color 0.25s,
+      color 0.25s,
+      border-color 0.25s;
+    white-space: nowrap;
+  }
+  .btn:active {
+    transform: translateY(1px) scale(0.99);
+  }
+  .btn-primary {
+    color: var(--color-paper);
+    background: var(--color-crimson);
+    box-shadow:
+      0 12px 32px -12px rgba(181, 18, 27, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+  .btn-primary:hover {
+    background: var(--color-ember);
+    transform: translateY(-2px);
+    box-shadow:
+      0 18px 42px -14px rgba(181, 18, 27, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  .btn-ghost {
+    color: var(--color-bone);
+    border: 1px solid rgba(244, 241, 238, 0.32);
+    background: rgba(11, 10, 10, 0.35);
+    backdrop-filter: blur(6px);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-champagne);
+    color: var(--color-paper);
+  }
+  .btn-dark {
+    color: var(--color-paper);
+    background: var(--color-char);
+  }
+  .btn-dark:hover {
+    background: var(--color-crimson);
+  }
+  .btn-outline-dark {
+    color: var(--color-char);
+    border: 1px solid rgba(26, 23, 23, 0.35);
+  }
+  .btn-outline-dark:hover {
+    border-color: var(--color-rouge);
+    color: var(--color-rouge);
+  }
+
+  .red-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);
+    opacity: 0.6;
+  }
+
+  .card-night {
+    background: linear-gradient(165deg, rgba(42, 38, 38, 0.55), rgba(19, 17, 17, 0.92));
+    border: 1px solid rgba(244, 241, 238, 0.09);
+    border-radius: var(--radius-card);
+  }
+  .card-light {
+    background: var(--color-paper);
+    border: 1px solid rgba(26, 23, 23, 0.08);
+    border-radius: var(--radius-card);
+    box-shadow: 0 24px 50px -34px rgba(26, 23, 23, 0.45);
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Mirror reflection under a display word — the logo's mirrored "Salon".
+     Drawn with a pseudo-element so it stays decorative (not read, not contrast-checked). */
+  .mirror {
+    position: relative;
+    display: inline-block;
+  }
+  .mirror::after {
+    content: attr(data-reflect);
+    position: absolute;
+    left: 0;
+    /* 76% of the line box = the letters' baseline (Jost caps at leading 0.85),
+       so the flipped copy hangs just below the word like a mirror. */
+    top: 76%;
+    transform: scaleY(-1);
+    opacity: 0.24;
+    -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 60%);
+    mask-image: linear-gradient(to top, #000 0%, transparent 60%);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.9s var(--ease-lux),
+      transform 0.9s var(--ease-lux);
+  }
+
+  /* Unifies mismatched client photos: warm gold duotone that blooms to color on hover */
+  .duotone {
+    filter: grayscale(1) sepia(0.55) saturate(1.35) hue-rotate(-8deg) brightness(0.82) contrast(1.06);
+    transition: filter 0.7s var(--ease-lux), transform 0.7s var(--ease-lux);
+  }
+  .group:hover .duotone,
+  .group:focus-visible .duotone {
+    filter: none;
+  }
+
+  /* Gold-leaf text for large display words (decorative; never small text) */
+  .gold-foil {
+    background: linear-gradient(100deg, #8a6420 0%, #e3c77d 28%, #fff1c4 42%, #c9a24d 58%, #8a6420 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: foil 9s var(--ease-lux) infinite;
+  }
+
+  .demo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    color: var(--color-paper);
+    background: var(--color-crimson);
+  }
+
+  /* Visible marker for any asset or fact still owed by the client */
+  .needs-client {
+    outline: 1px dashed var(--color-champagne);
+    outline-offset: 4px;
+  }
+  .needs-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    color: var(--color-champagne);
+    border: 1px dashed rgba(227, 199, 125, 0.7);
+  }
+  .bg-bone .needs-tag,
+  .card-light .needs-tag {
+    color: var(--color-rouge);
+    border-color: rgba(165, 15, 24, 0.6);
+  }
+}
+
+/* iOS Safari zooms into any form field under 16px — keep fields at 16px on touch-size screens. */
+@media (max-width: 1023px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes foil {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulse-gold {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
